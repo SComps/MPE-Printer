@@ -20,20 +20,19 @@ Public Class Form1
         If Not Directory.Exists(SetPath) Then
             Directory.CreateDirectory(SetPath)
         End If
-        ' Check to see if there's a config file
-        ' If so, load it up.
-        configFile = False  ' Simulate no config file
+        host = My.Settings.Host
+        port = My.Settings.Port
         status.Text = "Loading..."
         TextBox1.Text = host
         TextBox2.Text = port
-
-        If Not configFile Then
-            status.Text = "No setup information."
-        Else
-            status.Text = "Ready."
-        End If
+        chkAutoConn.Checked = My.Settings.AutoConnect
+        chkText.Checked = My.Settings.ShowText
+        chkOpenPdf.Checked = My.Settings.ShowPDF
         RTBColor = logBox.BackColor
         connButton.Focus()
+        status.Text = "Ready."
+        logBox.AppendText("Configuration settings loaded." & vbCrLf)
+        If chkAutoConn.Checked Then connButton.PerformClick()
     End Sub
 
     Private Sub ShowRcv_Click(sender As Object, e As EventArgs) Handles ShowRcv.Click
@@ -187,4 +186,17 @@ Public Class Form1
     Private Sub logBox_TextChanged(sender As Object, e As EventArgs) Handles logBox.TextChanged
         logBox.ScrollToCaret()
     End Sub
+
+    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+        My.Settings.Host = TextBox1.Text
+        My.Settings.Port = TextBox2.Text
+        My.Settings.AutoConnect = chkAutoConn.Checked
+        My.Settings.ShowText = chkText.Checked
+        My.Settings.ShowPDF = chkOpenPdf.Checked
+        My.Settings.Save()
+        logBox.AppendText("Saved settings." & vbCrLf)
+        logBox.ScrollToCaret()
+    End Sub
+
+
 End Class

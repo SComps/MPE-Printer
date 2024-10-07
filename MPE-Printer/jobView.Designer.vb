@@ -33,7 +33,7 @@ Partial Class jobView
         Me.Viewer.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Viewer.Location = New System.Drawing.Point(0, 0)
         Me.Viewer.Name = "Viewer"
-        Me.Viewer.Size = New System.Drawing.Size(799, 449)
+        Me.Viewer.Size = New System.Drawing.Size(1295, 449)
         Me.Viewer.TabIndex = 0
         Me.Viewer.Text = ""
         '
@@ -41,7 +41,7 @@ Partial Class jobView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(1296, 450)
         Me.Controls.Add(Me.Viewer)
         Me.Name = "jobView"
         Me.Text = "jobView"

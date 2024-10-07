@@ -5,7 +5,7 @@ Imports PdfSharp.Pdf
 Public Class Job
     ' Class for a new job
     Private myData As New List(Of String)
-
+    Private JobInfo As String = ""
     Public Property Data As List(Of String)
         Get
             Return myData
@@ -39,7 +39,8 @@ Public Class Job
         Dim thisOID As String = docViewer.OutputID
         Dim thisUser As String = docViewer.JobUser
         Dim JobTitle As String = String.Format("JOB{0}-{1}-{2}", thisJobID, thisOID, thisUser)
-        docViewer.Show()
+        JobInfo = JobTitle
+        If Form1.chkText.Checked Then docViewer.Show()
         CreatePDF("MPETest", myData, Form1.SetPath & "\" & JobTitle & ".pdf")
     End Sub
 
@@ -105,6 +106,8 @@ Public Class Job
         Next
         Dim outputFile As String = filename
         doc.Save(outputFile)
+        Form1.logBox.AppendText(String.Format("Wrote {0} pages for {1}" & vbCrLf, doc.PageCount, JobInfo))
+        Form1.logBox.ScrollToCaret()
         doc.Close()
         Return outputFile
     End Function
