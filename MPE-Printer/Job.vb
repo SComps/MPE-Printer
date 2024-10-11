@@ -1,5 +1,6 @@
 ﻿Imports System.Text.RegularExpressions
 Imports PdfSharp.Drawing
+Imports PdfSharp.Fonts
 Imports PdfSharp.Pdf
 
 Public Class Job
@@ -33,7 +34,7 @@ Public Class Job
         'Insert 3 lines at the beginning of the viewed document
         myData.Insert(0, " ")
         myData.Insert(0, " ")
-        myData.Insert(0," ")
+        myData.Insert(0, " ")
         docViewer.ReceiveJob(myData)
         Dim thisJobID As String = docViewer.JobID
         Dim thisOID As String = docViewer.OutputID
@@ -53,15 +54,16 @@ Public Class Job
         page.Orientation = PdfSharp.PageOrientation.Landscape
         ' Get an XGraphics object for drawing
         Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
-
         ' Create a font
-        Dim font As XFont = New XFont("Lucida Console", 8, XFontStyle.Regular)
 
+        Dim font As New XFont("Lucida Console", 8, XFontStyleEx.Regular)
+        Dim bkgrd As XImage = XImage.FromFile("dummy.jpg")
+        gfx.DrawImage(bkgrd, 0, 0)
         ' Set initial coordinates for text
-        Dim x As Double = 10
+        Dim x As Double = 30
         Dim y As Double = 0
-        Dim newHeight As Double = page.Height.Point / 67
-        Dim lineHeight As Double = newHeight
+        Dim newHeight As Double = page.Height.Point / 66
+        Dim lineHeight As Double = (newHeight - 0.55)
         ' Calculate the maximum number of lines that can fit on a page
         Dim maxLinesPerPage As Integer = CInt((page.Height.Point - y) / lineHeight)
 
@@ -75,9 +77,10 @@ Public Class Job
                 page = doc.AddPage()
                 page.Orientation = PdfSharp.PageOrientation.Landscape
                 gfx = XGraphics.FromPdfPage(page)
+                gfx.DrawImage(bkgrd, 0, 0)
                 y = 0 ' Reset the y-coordinate
                 currentLine = 0
-                ' For MP3 we'll allow a half inch top margin and let MPE handle
+                ' For MPE we'll allow a half inch top margin and let MPE handle
                 ' the bottom.
             End If
             line = line.Replace(vbFormFeed, "") 'We've already dealt with the FormFeeds
@@ -105,9 +108,9 @@ Public Class Job
             currentLine += 1
         Next
         Dim outputFile As String = filename
-        doc.Save(outputFile)
         Form1.logBox.AppendText(String.Format("Wrote {0} pages for {1}" & vbCrLf, doc.PageCount, JobInfo))
         Form1.logBox.ScrollToCaret()
+        doc.Save(outputFile)
         doc.Close()
         Return outputFile
     End Function
